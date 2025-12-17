@@ -1,54 +1,50 @@
-# 📰 TruthLens: AI-Powered Fake News Analyzer
+# 🏦 Bank Churn Prediction
 
 ## 🚀 Overview
-**TruthLens** is a misinformation detection tool designed to analyze news articles and determine their credibility. In an era where market manipulation and fake financial news can crash stocks (or mislead customers), this tool uses **LangChain** and **LLMs (Large Language Models)** to cross-reference claims against logical patterns of misinformation.
+This project is a machine learning solution designed to predict which bank customers are likely to leave (churn). By identifying "at-risk" customers early, banks can take proactive steps (like offering better rates) to retain them, directly impacting the bottom line.
 
 ## 🎯 Problem Statement
-Manual verification of news is slow and prone to bias. This project automates the "fact-checking" process by analyzing the **linguistic patterns** and **source credibility** of a given text.
+Customer acquisition is **5x more expensive** than customer retention. The goal of this project is to classify customers into two categories:
+1.  **Exited (1):** Customer left the bank.
+2.  **Retained (0):** Customer stayed.
+
+**Challenge:** The data was highly imbalanced (mostly retained customers), requiring specific techniques to avoid bias.
 
 ## 🛠️ Tech Stack
-* **Language:** Python 3.9+
-* **Framework:** LangChain (for orchestration)
-* **AI Model:** ]HuggingFace Hub
-* **Frontend:** Streamlit (for a simple web UI)
-* **Vector Store:** FAISS (for storing reference contexts - *optional*)
-* **Libraries:** Pandas, NumPy, Scikit-learn
-<img width="1012" height="541" alt="image" src="https://github.com/user-attachments/assets/1350d969-4029-4101-a2b1-7692280e1898" />
+* **Language:** Python 3.8+
+* **Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib
+* **Model:** XGBoost Classifier & Random Forest
+* **Technique:** SMOTE (Synthetic Minority Over-sampling Technique) for balancing data.
+* <img width="1012" height="541" alt="image" src="https://github.com/user-attachments/assets/8e01a6a2-8a6f-4d16-97f6-02acd8374ac9" />
 
-## ⚙️ How It Works (System Architecture)
-The system follows a 3-step pipeline:
 
-1.  **Input Ingestion:** The user pastes a news URL or raw text into the Streamlit UI.
-2.  **Processing (LangChain):**
-    * The text is cleaned (removing HTML tags/special characters).
-    * **Prompt Engineering:** The model is prompted to analyze the text for *sensationalism*, *lack of sources*, and *emotional manipulation*.
-3.  **Verdict Generation:** The system outputs a **"Credibility Score" (0-100%)** and highlights suspicious sentences.
+## ⚙️ Workflow
+1.  **Data Preprocessing:**
+    * Handled missing values.
+    * Encoded categorical variables (e.g., "Gender", "Geography") using One-Hot Encoding.
+2.  **Feature Engineering:**
+    * Analyzed correlations between `Age`, `CreditScore`, and `Balance`.
+    * Identified that older customers with higher balances were more likely to churn.
+3.  **Handling Imbalance:**
+    * Used **SMOTE** to generate synthetic samples for the "Exited" class so the model wouldn't just guess "Retained" every time.
+4.  **Model Training:**
+    * Compared Logistic Regression vs. XGBoost.
+    * Selected **XGBoost** for its superior performance on non-linear data.
 
-## 🖥️ Installation & Setup
-1.  **Clone the repository**
+## 📊 Key Results
+* **Accuracy:** 86%
+* **Recall (The most important metric):** 80%
+    * *Why Recall?* In banking, it is worse to miss a customer who is about to leave (False Negative) than to accidentally flag a loyal customer (False Positive).
+
+## 🚀 How to Run
+1.  **Install requirements**
     ```bash
-    git clone [https://github.com/yourusername/truthlens.git](https://github.com/yourusername/truthlens.git)
-    cd truthlens
+    pip install pandas sklearn xgboost seaborn
     ```
-
-2.  **Install dependencies**
+2.  **Run the script**
     ```bash
-    pip install -r requirements.txt
+    python churn_prediction.py
     ```
-
-3.  **Set up API Keys**
-    Create a `.env` file and add your OpenAI key:
-    ```
-    HUGGINGFACEHUB_API_TOKEN= xx    ```
-
-4.  **Run the App**
-    ```bash
-    streamlit run app.py
-    ```
-
-## 📊 Future Improvements
-* **Web Search Integration:** Connect to Google Search API to cross-check facts in real-time.
-* **Financial Domain Fine-Tuning:** Specialize the model to detect "Pump and Dump" stock schemes specifically for banking use cases.
 
 ---
-*Created by [Your Name] - 2025*
+*Project developed for Financial Data Analysis study.*
